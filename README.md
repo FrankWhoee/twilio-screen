@@ -6,6 +6,7 @@ A small python app that changes colour whenever you text a twilio number.
 * Can show public messages
 * Takes string input to change the color, for example you can text 'blue' and the screen will change correspondingly
 * Has a profanity filter for public messages!
+* If the texted content is not a valid colour, a random colour is chosen.
 
 # Installation
 
