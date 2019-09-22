@@ -6,8 +6,9 @@ from tkinter_colors import COLORS
 import random
 import re
 from profanity_check import predict, predict_prob
-
+import time
 app = Flask(__name__)
+
 
 class App(threading.Thread):
 
@@ -19,10 +20,10 @@ class App(threading.Thread):
     def callback(self):
         self.root.quit()
 
-    def set_colour(self,color):
+    def set_colour(self, color):
         self.root.configure(bg=color)
         self.bg_color = color
-        self.label.configure(bg= self.bg_color)
+        self.label.configure(bg=self.bg_color)
         self.label.pack(side='top', expand='yes', fill='both')
         self.lastnum.configure(bg=self.bg_color)
         self.message.configure(bg=self.bg_color)
@@ -35,11 +36,17 @@ class App(threading.Thread):
         self.message.configure(text='Public Message:' + '\n' + message)
         self.message.pack(side='top', expand='yes', fill='both')
 
+    def reset_message(self):
+        self.message.configure(text='vikingsdev.ca/signup')
+        self.message.pack(side='top', expand='yes', fill='both')
+
     def run(self):
         self.root = tk.Tk()
         self.root.protocol("WM_DELETE_WINDOW", self.callback)
         self.root.configure(bg=self.bg_color)
-        self.label = tk.Label(self.root, text="Text a colour to PHONE_NUMBER to change it, or type a message.", font=("Acre",40), bg=self.bg_color, anchor='center')
+        # Back up number: 604-904-6042
+        self.label = tk.Label(self.root, text="Text a colour to 604-359-3028 to change it, or type a message.",
+                              font=("Acre", 40), bg=self.bg_color, anchor='center')
         self.label.pack(side='top', expand='yes', fill='both')
         self.lastnum = tk.Label(self.root, text="Last phone number: -", font=("Acre", 40),
                                 bg=self.bg_color, anchor='center')
@@ -51,8 +58,11 @@ class App(threading.Thread):
 
         self.root.mainloop()
 
-tkapp = App()
+    def key(self, event):
+        self.reset_message()
 
+
+tkapp = App()
 
 @app.route("/sms", methods=['GET', 'POST'])
 def sms_ahoy_reply():
@@ -64,15 +74,13 @@ def sms_ahoy_reply():
     if message_body.lower() not in COLORS and not hex_match:
         if predict([message_body])[0] < 0.7:
             App.set_message(self=tkapp, message=message_body)
+        if message_body.lower() == '/r':
+            App.reset_message(self=tkapp)
         message_body = random.choice(COLORS)
     App.set_colour(self=tkapp, color=message_body.lower())
     App.set_lastnumber(self=tkapp, phone_number=number)
     return None
 
 if __name__ == "__main__":
+    print("Running app...")
     app.run(debug=True)
-
-
-
-
-
