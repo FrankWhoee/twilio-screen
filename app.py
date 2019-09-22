@@ -58,7 +58,7 @@ class App(threading.Thread):
         self.root = tk.Tk()
         self.root.protocol("WM_DELETE_WINDOW", self.callback)
         self.root.configure(bg=self.bg_color)
-        self.label = tk.Label(self.root, text="Text a colour to "+self.phone_num+" to change it, or type a message.",
+        self.label = tk.Label(self.root, text="Text a colour to "+self.phone_num+" to change it, \nor type a message.",
                               font=("Acre", 40), bg=self.bg_color, anchor='center')
         self.label.pack(side='top', expand='yes', fill='both')
         self.lastnum = tk.Label(self.root, text="Last phone number: -", font=("Acre", 40),
