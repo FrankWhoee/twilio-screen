@@ -88,8 +88,9 @@ def sms_ahoy_reply():
         if message_body.lower == '/r':
             App.reset_message()
         message_body = random.choice(list(colors.get_named_colors_mapping().values()))
-    else:
+    elif not hex_match:
         message_body = colors.get_named_colors_mapping()[message_body.lower()]
+
     App.set_colour(self=tkapp, color=message_body)
     App.set_lastnumber(self=tkapp, phone_number=number)
     return None
